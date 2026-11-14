@@ -1,0 +1,7 @@
+{
+  "name": "cybooks-finance",
+  "description": "Four finance skills from Cybooks: month-end close, journal entry screen, close readiness scorecard, and the Cyprus VAT return with its VIES statement.",
+  "author": { "name": "Cybooks", "url": "https://cybooks.com.cy" },
+  "homepage": "https://cybooks.com.cy/claude-finance-skills/",
+  "license": "MIT"
+}

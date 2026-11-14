@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://www.mof.gov.cy" xmlns:mof="http://www.mof.gov.cy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:olive="http://www.intracom.gr/olive" elementFormDefault="qualified">
+
+	<xsd:annotation>
+		<xsd:documentation xml:lang="EL">XML Schema για την αναπαράσταση δηλώσεων VIES (από 1/1/2010) το οποίο υποβάλλεται από τελικό χρήστη. To παρόν schema προορίζεται για δημόσια χρήση.</xsd:documentation>
+	</xsd:annotation>
+
+	<xsd:include schemaLocation="cy-core.xsd" />
+	<xsd:import namespace="http://www.intracom.gr/olive" schemaLocation="olive-core.xsd" />
+
+	<xsd:simpleType name="vies1DocumentVersionType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="EL">Ορισμός τύπου για την αναπαράσταση της έκδοσης υλοποίησης του παρόντος XML Schema</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="2010-1.0" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="vies1AmountType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="EL">Ορισμός τύπου για την αναπαράσταση αξιών της δήλωσης VIES</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:integer">
+			<xsd:minInclusive value="-999999999999" />
+			<xsd:maxInclusive value="99999999999" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="vies1COSRowType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="EL">Ορίζεται η μορφή που θα έχει μια γραμμή στο πίνακα Call-off Stocks του VIES</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="cos-vat-number" type="mof:vatNumberType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="EL">Ο αριθμός εγγραφής Φ.Π.Α.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+
+			<xsd:element name="cos-code" type="xsd:integer">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="EL">Κωδικός</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+
+			<xsd:element name="cos-month" type="olive:monthType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="EL">Μήνας</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+
+			<xsd:element name="cos-year" type="xsd:gYear">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="EL">Έτος</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+
+			<xsd:element name="cos-initial-vat-number" type="mof:vatNumberType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="EL">Ο αρχικός αριθμός εγγραφής Φ.Π.Α.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+
+		</xsd:sequence>
+		<xsd:attribute name="cos-number" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:integer">
+					<xsd:minInclusive value="1"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+
+	<xsd:complexType name="vies1COSType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="EL">Ορισμός τύπου μέρους COS</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="cos-row" type="mof:vies1COSRowType" minOccurs="0" maxOccurs="unbounded"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="vies1RowType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="EL">Ορίζεται η μορφή που θα έχει μια γραμμή στο πίνακα του VIES</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="vat-number" type="mof:vatNumberType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="EL">Ο αριθμός εγγραφής Φ.Π.Α.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="supplies-amount" type="mof:vies1AmountType" default="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="EL">Αξία ενδοκοινοτικών παραδόσεων</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="triangle-transactions-amount" type="mof:vies1AmountType" default="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="EL">Αξία τριγωνικών συναλλαγών</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="services-amount" type="mof:vies1AmountType" default="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="EL">Αξία ενδοκοινοτικών παροχών</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="number" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:integer">
+					<xsd:minInclusive value="1"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+
+	<xsd:complexType name="vies1DeclType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="EL">Ορισμός τύπου δήλωσης VIES</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+
+			<xsd:element name="period" type="olive:date-rangeType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="EL">H περίοδος για την οποία πραγματοποιήθηκε η δήλωση</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+
+			<xsd:element name="month" type="olive:monthType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="EL">Μήνας περιόδου δήλωσης</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+
+			<xsd:element name="year" type="xsd:gYear">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="EL">Έτος περιόδου δήλωσης</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+
+			<xsd:element name="total-rows">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="EL">Συνολικός Αριθμός Εγγραφών</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:integer">
+						<xsd:minInclusive value="0" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="sum-supplies-amount" type="mof:vies1AmountType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="EL">Συνολική αξία ενδοκοινοτικών παραδόσεων</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="sum-triangle-transactions-amount" type="mof:vies1AmountType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="EL">Συνολική αξία ενδοκοινοτικών παραδόσεων</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="sum-services-amount" type="mof:vies1AmountType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="EL">Συνολική αξία ενδοκοινοτικών παροχών</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+
+			<xsd:element name="row" type="mof:vies1RowType" minOccurs="0" maxOccurs="unbounded"></xsd:element>
+
+			<xsd:element name="vies1-call-off-stocks" type="mof:vies1COSType" minOccurs="0" maxOccurs="1">
+				<xsd:unique name="uniqueCosRowNumbers">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="EL">Βεβαίωση ότι δεν έχουμε δυο ίδιους αριθμούς γραμμής</xsd:documentation>
+					</xsd:annotation>
+					<xsd:selector xpath="mof:cos-row" />
+					<xsd:field xpath="@cos-number" />
+				</xsd:unique>
+			</xsd:element>
+
+		</xsd:sequence>
+
+		<xsd:attribute name="version" type="mof:vies1DocumentVersionType" use="required">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="EL">Έκδοση υλοποίησης του παρόντος XML Schema</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+
+	</xsd:complexType>
+
+	<xsd:element name="vies1-declarations">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="EL">Ορισμός τύπου για την αναπαράσταση μιας ή περισσότερων (ενδεικτικά έχει τεθεί άνω όριο 50) δηλώσεων VIES1</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="vies1-declaration" maxOccurs="50">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="EL">Δήλωση VIES</xsd:documentation>
+					</xsd:annotation>
+					<xsd:complexType>
+						<xsd:complexContent>
+							<xsd:extension base="mof:vies1DeclType">
+								<xsd:attribute name="taxpayer" type="mof:cyprianVatDigitsType" use="required"></xsd:attribute>
+							</xsd:extension>
+						</xsd:complexContent>
+					</xsd:complexType>
+					<xsd:unique name="uniqueVatNumbers">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="EL">Βεβαίωση ότι δεν έχουμε δυο ίδιους κωδικούς Μητρώου ΦΠΑ</xsd:documentation>
+						</xsd:annotation>
+						<xsd:selector xpath="mof:row" />
+						<xsd:field xpath="mof:vat-number" />
+						<xsd:field xpath="mof:vat-number/@country" />
+					</xsd:unique>
+					<xsd:unique name="uniqueRowNumbers">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="EL">Βεβαίωση ότι δεν έχουμε δυο ίδιους αριθμούς γραμμής</xsd:documentation>
+						</xsd:annotation>
+						<xsd:selector xpath="mof:row" />
+						<xsd:field xpath="@number" />
+					</xsd:unique>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+
+		<xsd:key name="unique-vies1-per-taxpayer">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="EL">Περιορισμός ο οποίος εξασφαλίζει ότι έχουμε μοναδικές δηλώσεις VIES ανά φορολογούμενο</xsd:documentation>
+			</xsd:annotation>
+			<xsd:selector xpath="mof:vies1-declaration" />
+			<xsd:field xpath="@taxpayer" />
+		</xsd:key>
+	</xsd:element>
+
+</xsd:schema>

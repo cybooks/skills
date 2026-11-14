@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://www.mof.gov.cy" xmlns:mof="http://www.mof.gov.cy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:olive="http://www.intracom.gr/olive" elementFormDefault="qualified">
+
+	<xsd:annotation>
+		<xsd:documentation xml:lang="EL">XML Schema για την ανάπαράσταση δήλωσης ΦΠΑ το οποίο υποβάλλεται από τελικό χρήστη. To παρόν schema προορίζεται για δημόσια χρήση.</xsd:documentation>
+	</xsd:annotation>
+
+	<xsd:include schemaLocation="cy-core.xsd" />
+	<xsd:import namespace="http://www.intracom.gr/olive" schemaLocation="olive-core.xsd" />
+
+	<xsd:simpleType name="f4DeclVersionType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="EL">Ορισμός τύπου για την αναπαράσταση της έκδοσης υλοποίησης του παρόντος XML Schema</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="2010-1.0" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="f4AmountType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="EL">Ορισμός τύπου για ποσό</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="\-?\d{1,10},\d{1,2}" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="f4AmountTypeTotals">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="EL">Ορισμός τύπου για ποσό Συνόλων</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="\-?\d{1,10},00" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="f4FormType">
+
+		<xsd:annotation>
+			<xsd:documentation xml:lang="EL">Ορισμός τύπου Φόρμας Δήλωσης ΦΠΑ</xsd:documentation>
+		</xsd:annotation>
+
+		<xsd:sequence>
+			<xsd:element name="period" type="olive:date-rangeType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="EL">H περίοδος για την οποία πραγματοποιήθηκε η δήλωση</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+
+			<xsd:element name="due-outflow-vat" type="mof:f4AmountType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="EL">Φ.Π.Α. οφειλόμενος αυτήν την περίοδο επί των εκροών</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="due-eu-acquisition-vat" type="mof:f4AmountType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="EL">Φ.Π.Α. οφειλόμενος αυτή την περίοδο επί αποκτήσεων από άλλα Κράτη μέλη</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="due-vat-total" type="mof:f4AmountType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="EL">Συνολικό οφειλόμενο Φ.Π.Α. (το άθροισμα των τετραγώνων 1 και 2)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="deducted-eu-acquisition-vat" type="mof:f4AmountType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="EL">Φ.Π.Α. που εκπίπτει αυτή την περίοδο επί αγορών και άλλων εισροών (περιλαμβανομένων και των αποκτήσεων από άλλα Κράτη μέλη)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="total-vat" type="mof:f4AmountType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="EL">Φ.Π.Α. καταβλητέος ή επιστρεπτέος (Διαφορά μεταξύ τετραγώνων 3 και 4)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="total-outflows" type="mof:f4AmountTypeTotals">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="EL">Ολική αξία εκροών (χωρίς Φ.Π.Α.). (Συμπεριλαμβανομένου του ποσού του τετραγώνου 8Α, 8Β, 9, 10 και 11Β)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="total-inflows" type="mof:f4AmountTypeTotals">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="EL">Ολική αξία εισροών (χωρίς Φ.Π.Α.). (Συμπεριλαμβανομένου του ποσού του τετραγώνου 11Α + 11Β)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="total-to-eu-services" type="mof:f4AmountTypeTotals">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="EL">Ολική αξία όλων των παραδόσεων αγαθών και συνδεόμενων υπηρεσιών (χωρίς Φ.Π.Α.) προς άλλα Κράτη μέλη.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="total-to-eu-supplied-services" type="mof:f4AmountTypeTotals">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="EL">Ολική αξία παροχής υπηρεσιών σε υ.φ.π σε άλλα Κράτη μέλη.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="total-to-eu-zero-services" type="mof:f4AmountTypeTotals">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="EL">Ολική αξία εκροών που επιβαρύνονται με συντελεστή 0% (άλλων από αυτών που περιλαμβάνονται στο τετράγωνο 8Α).</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="total-sales" type="mof:f4AmountTypeTotals">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="EL">Ολική αξία πωλήσεων εκτός αντικειμένου με δικαίωμα έκπτωσης του φόρου εισροών (άλλων από αυτών που περιλαμβάνονται στο τετράγωνο 8Β).</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="total-from-eu-services" type="mof:f4AmountTypeTotals">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="EL">Ολική αξία όλων των αποκτήσεων αγαθών και συνδεόμενων υπηρεσιών (χωρίς Φ.Π.Α.) από άλλα Κράτη μέλη.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="total-from-eu-supplied-services" type="mof:f4AmountTypeTotals">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="EL">Ολική αξία υπηρεσιών που λαμβάνονται από υ.φ.π από άλλα Κράτη μέλη.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="f4PaymentSlipType">
+
+		<xsd:annotation>
+			<xsd:documentation xml:lang="EL">Ορισμός τύπου Απόδειξης πληρωμής Δήλωσης ΦΠΑ</xsd:documentation>
+		</xsd:annotation>
+
+		<xsd:sequence>
+			<xsd:element name="pay-amount-descr" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="EL">Πληρωτέο ποσό (ολογράφως)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="pay-amount" type="mof:f4AmountType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="EL">Ευρώ</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="pay-date" type="olive:date">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="EL">Ημερομηνία πληρωμής</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="pay-code">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="EL">Κωδικός αριθμός Τράπεζας</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="BK01000" />
+						<xsd:enumeration value="BK02000" />
+						<xsd:enumeration value="BK05000" />
+						<xsd:enumeration value="BK06000" />
+						<xsd:enumeration value="BK07000" />
+						<xsd:enumeration value="BK08000" />
+						<xsd:enumeration value="BK09000" />
+						<xsd:enumeration value="BK11000" />
+						<xsd:enumeration value="BK12000" />
+						<xsd:enumeration value="TR00000" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="f4DeclType">
+
+		<xsd:annotation>
+			<xsd:documentation xml:lang="EL">Ορισμός τύπου δήλωσης ΦΠΑ</xsd:documentation>
+		</xsd:annotation>
+
+		<xsd:sequence>
+			<xsd:element name="form" type="mof:f4FormType" minOccurs="1"></xsd:element>
+			<xsd:element name="payment-slip" type="mof:f4PaymentSlipType" minOccurs="0"></xsd:element>
+		</xsd:sequence>
+
+		<xsd:attribute name="version" type="mof:f4DeclVersionType" use="required">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="EL">Έκδοσης υλοποίησης του παρόντος XML Schema</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+
+	</xsd:complexType>
+
+	<xsd:element name="f4-declarations">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="EL">Ορισμός τύπου για την αναπαράσταση μιας ή περισσότερων (ενδεικτικά έχει τεθεί άνω όριο 50) δηλώσεων ΦΠΑ</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="f4-declaration" maxOccurs="50">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="EL">Δήλωση ΦΠΑ</xsd:documentation>
+					</xsd:annotation>
+					<xsd:complexType>
+						<xsd:complexContent>
+							<xsd:extension base="mof:f4DeclType">
+								<xsd:attribute name="taxpayer" type="mof:cyprianVatDigitsType" use="required"></xsd:attribute>
+							</xsd:extension>
+						</xsd:complexContent>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:key name="unique-f4-per-taxpayer">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="EL">Περιορισμός ο οποίος εξασφαλίζει ότι έχουμε μοναδικές δηλώσεις ΦΠΑ ανά φορολογούμενο</xsd:documentation>
+			</xsd:annotation>
+			<xsd:selector xpath="mof:f4-declaration" />
+			<xsd:field xpath="@taxpayer" />
+		</xsd:key>
+	</xsd:element>
+
+</xsd:schema>
